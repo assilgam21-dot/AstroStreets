@@ -1,0 +1,24 @@
+-- spells.lua
+--
+-- Reserved for the Lua spell layer. Gameplay entities (player, NPCs, objects,
+-- area triggers) now live in C++; Lua will be dedicated to spells, spell visuals
+-- and spell visual effects.
+--
+-- The C++/Lua binding for this is intentionally not wired up yet — see
+-- World.h (scriptsDir_) and ScriptEngine.* for the seam where it will plug in.
+--
+-- Sketch of where this is heading:
+--
+-- spells = {
+--   spark = {
+--     name   = "Spark",
+--     school = "fire",
+--     damage = 4,
+--     range  = 3,
+--     visual = { glyph = "*", color = {1.0, 0.7, 0.2}, frames = 4, fps = 12 },
+--     on_cast = function(caster, target) --[[ ... ]] end,
+--   },
+-- }
+-- return spells
+
+return {}
