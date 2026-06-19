@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="AstroStreets.vcxproj" Id="3b93feb1-7d85-4bd9-bfa1-dd6587b6ae5f" />
+</Solution>
