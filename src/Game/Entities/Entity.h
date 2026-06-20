@@ -58,6 +58,7 @@ public:
     // ---- engine-driven (usually not overridden) ----
     void Update(float dt);                        // advance animation, call OnUpdate
     virtual void Render(RenderFrame& frame) const; // emit sprite draw(s)
+    virtual void EmitLights(RenderFrame& /*frame*/) const {}  // optional point lights
 
 protected:
     World*      world_ = nullptr;

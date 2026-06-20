@@ -1,7 +1,7 @@
 // AstroStreets — a 2D sprite game with a C++/OpenGL engine and (later) Lua spells.
 //
 // Two threads:
-//   * main / render thread  — owns the GL context, polls window events, and
+//   * main / render thread  — owns the D3D12 device, polls window events, and
 //                             draws the latest world snapshot every vsync.
 //   * simulation thread     — owns the World (entities + camera), steps it at a
 //                             fixed timestep, and publishes finished frames.
@@ -45,13 +45,15 @@ int main() {
         return 1;
     }
 
-    // --- render thread owns window + GL context ---
+    // --- render thread owns the window + D3D12 device ---
     Window window;
     if (!window.create(WINDOW_W, WINDOW_H, "AstroStreets")) return 1;
-    window.makeContextCurrent();
 
     Renderer renderer;
-    if (!renderer.init(assetsDir->generic_string())) { window.destroy(); return 1; }
+    if (!renderer.init(window.nativeHandle(), WINDOW_W, WINDOW_H, assetsDir->generic_string())) {
+        window.destroy();
+        return 1;
+    }
 
     // --- launch the simulation thread ---
     SnapshotBuffer snapshot;
@@ -70,7 +72,6 @@ int main() {
 
         snapshot.acquire(frame);
         renderer.draw(frame, window.width(), window.height());
-        window.swapBuffers();
     }
 
     // --- shut down ---

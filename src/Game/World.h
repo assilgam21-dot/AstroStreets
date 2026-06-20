@@ -12,6 +12,7 @@ struct RenderFrame;
 class Input;
 class Unit;
 class Player;
+class ScriptEngine;
 
 // The authoritative C++ game state, owned and driven by the simulation thread.
 //
@@ -62,7 +63,8 @@ private:
     Input& input_;
     int    cols_, rows_;
     int    viewW_, viewH_;
-    std::string scriptsDir_;   // reserved for the Lua spell layer (later)
+    std::string scriptsDir_;
+    std::unique_ptr<ScriptEngine> scripts_;
 
     std::vector<std::unique_ptr<Entity>> entities_;
     Player* player_ = nullptr;

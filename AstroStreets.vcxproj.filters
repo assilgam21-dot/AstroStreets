@@ -13,11 +13,14 @@
     <Filter Include="Source Files\Engine" />
     <Filter Include="Source Files\Game" />
     <Filter Include="Source Files\Game\Entities" />
+    <Filter Include="Source Files\Game\Scripting" />
     <Filter Include="Header Files\Core" />
     <Filter Include="Header Files\Engine" />
     <Filter Include="Header Files\Game" />
     <Filter Include="Header Files\Game\Entities" />
+    <Filter Include="Header Files\Game\Scripting" />
     <Filter Include="Scripts" />
+    <Filter Include="Scripts\entities" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -68,8 +71,11 @@
     <ClCompile Include="src\Game\Entities\AreaTrigger.cpp">
       <Filter>Source Files\Game\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\Entities\FireRune.cpp">
+    <ClCompile Include="src\Game\Entities\ScriptedAreaTrigger.cpp">
       <Filter>Source Files\Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Scripting\ScriptEngine.cpp">
+      <Filter>Source Files\Game\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +101,9 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Font.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\D3DUtil.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer.h">
@@ -136,17 +145,23 @@
     <ClInclude Include="src\Game\Entities\AreaTrigger.h">
       <Filter>Header Files\Game\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\Entities\FireRune.h">
+    <ClInclude Include="src\Game\Entities\ScriptedAreaTrigger.h">
       <Filter>Header Files\Game\Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Entities\DamageInfo.h">
       <Filter>Header Files\Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Scripting\ScriptEngine.h">
+      <Filter>Header Files\Game\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
     <None Include="scripts\spells.lua">
       <Filter>Scripts</Filter>
+    </None>
+    <None Include="scripts\entities\firerune.lua">
+      <Filter>Scripts\entities</Filter>
     </None>
   </ItemGroup>
 </Project>

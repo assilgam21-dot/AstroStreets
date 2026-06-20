@@ -1,0 +1,26 @@
+# Build output
+x64/
+Win32/
+[Dd]ebug/
+[Rr]elease/
+*.obj
+*.ilk
+*.pdb
+*.exe
+*.dll
+*.lib
+*.exp
+*.recipe
+*.tlog
+*.log
+
+# Visual Studio / IDE
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.db-*
+*.opendb
+
+# vcpkg
+vcpkg_installed/

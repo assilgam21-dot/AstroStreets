@@ -1,5 +1,10 @@
 #pragma once
+#include <vector>
+#include <d3d12.h>
+#include <wrl/client.h>
 
-// Builds the 8x8 ASCII bitmap font into an OpenGL texture (a 16x8 glyph atlas,
-// single channel). Requires a current GL context. Returns the texture id.
-unsigned int CreateFontAtlas();
+Microsoft::WRL::ComPtr<ID3D12Resource> CreateFontAtlas(
+    ID3D12Device* dev, ID3D12GraphicsCommandList* cmd,
+    ID3D12DescriptorHeap* srvHeap, UINT srvDescSize, UINT slot,
+    D3D12_GPU_DESCRIPTOR_HANDLE& outGpu,
+    std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>>& uploadsKeepAlive);

@@ -87,7 +87,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -107,7 +107,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -125,7 +125,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -145,7 +145,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -162,13 +162,14 @@
     <ClCompile Include="src\Game\GameLoop.cpp" />
     <ClCompile Include="src\Game\Camera.cpp" />
     <ClCompile Include="src\Game\World.cpp" />
+    <ClCompile Include="src\Game\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="src\Game\Entities\Entity.cpp" />
     <ClCompile Include="src\Game\Entities\Unit.cpp" />
     <ClCompile Include="src\Game\Entities\Player.cpp" />
     <ClCompile Include="src\Game\Entities\Npc.cpp" />
     <ClCompile Include="src\Game\Entities\GameObject.cpp" />
     <ClCompile Include="src\Game\Entities\AreaTrigger.cpp" />
-    <ClCompile Include="src\Game\Entities\FireRune.cpp" />
+    <ClCompile Include="src\Game\Entities\ScriptedAreaTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Constants.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\Core\Animation.h" />
     <ClInclude Include="src\Core\RenderFrame.h" />
     <ClInclude Include="src\Engine\Font.h" />
+    <ClInclude Include="src\Engine\D3DUtil.h" />
     <ClInclude Include="src\Engine\Renderer.h" />
     <ClInclude Include="src\Engine\SpriteManager.h" />
     <ClInclude Include="src\Engine\Window.h" />
@@ -192,12 +194,14 @@
     <ClInclude Include="src\Game\Entities\Npc.h" />
     <ClInclude Include="src\Game\Entities\GameObject.h" />
     <ClInclude Include="src\Game\Entities\AreaTrigger.h" />
-    <ClInclude Include="src\Game\Entities\FireRune.h" />
+    <ClInclude Include="src\Game\Entities\ScriptedAreaTrigger.h" />
     <ClInclude Include="src\Game\Entities\DamageInfo.h" />
+    <ClInclude Include="src\Game\Scripting\ScriptEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
     <None Include="scripts\spells.lua" />
+    <None Include="scripts\entities\firerune.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,5 @@
 #include "Engine/SpriteManager.h"
-
-#include <glad/glad.h>
+#include "Engine/D3DUtil.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -8,7 +7,6 @@
 #include <cstdio>
 
 namespace {
-// SpriteId -> filename (relative to assets/sprites). Keep in sync with SpriteId.
 const char* fileFor(SpriteId id) {
     switch (id) {
         case SpriteId::Floor:      return "floor.png";
@@ -23,9 +21,12 @@ const char* fileFor(SpriteId id) {
         default:                   return nullptr;
     }
 }
-} // namespace
+}
 
-bool SpriteManager::loadAll(const std::string& assetsDir) {
+bool SpriteManager::loadAll(ID3D12Device* device, ID3D12GraphicsCommandList* cmd,
+                            ID3D12DescriptorHeap* srvHeap, UINT srvDescSize, UINT& nextSlot,
+                            const std::string& assetsDir,
+                            std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>>& uploadsKeepAlive) {
     stbi_set_flip_vertically_on_load(false);
     bool ok = true;
 
@@ -43,31 +44,26 @@ bool SpriteManager::loadAll(const std::string& assetsDir) {
             continue;
         }
 
-        unsigned int tex = 0;
-        glGenTextures(1, &tex);
-        glBindTexture(GL_TEXTURE_2D, tex);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        Tex t;
+        t.res = d3dutil::UploadTexture(device, cmd, (UINT)w, (UINT)h,
+                                       DXGI_FORMAT_R8G8B8A8_UNORM, 4, pixels, uploadsKeepAlive);
+        t.gpu = d3dutil::CreateSRVAt(device, srvHeap, srvDescSize, nextSlot, t.res.Get(),
+                                     DXGI_FORMAT_R8G8B8A8_UNORM);
+        t.w = w; t.h = h; t.valid = true;
+        ++nextSlot;
 
         stbi_image_free(pixels);
-        textures_[i] = Tex{ tex, w, h };
+        textures_[i] = std::move(t);
     }
     return ok;
 }
 
-void SpriteManager::shutdown() {
-    for (auto& t : textures_) {
-        if (t.id) glDeleteTextures(1, &t.id);
-        t = Tex{};
-    }
-}
-
-unsigned int SpriteManager::texture(SpriteId id) const {
+bool SpriteManager::has(SpriteId id) const {
     int i = (int)id;
-    return (i > 0 && i < (int)SpriteId::Count) ? textures_[i].id : 0;
+    return i > 0 && i < (int)SpriteId::Count && textures_[i].valid;
+}
+D3D12_GPU_DESCRIPTOR_HANDLE SpriteManager::handle(SpriteId id) const {
+    return textures_[(int)id].gpu;
 }
 int SpriteManager::width(SpriteId id) const {
     int i = (int)id;

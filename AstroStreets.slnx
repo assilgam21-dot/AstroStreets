@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <Solution>
   <Configurations>
     <Platform Name="x64" />
@@ -5,3 +6,12 @@
   </Configurations>
   <Project Path="AstroStreets.vcxproj" Id="3b93feb1-7d85-4bd9-bfa1-dd6587b6ae5f" />
 </Solution>
+=======
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="AstroStreets.vcxproj" Id="3b93feb1-7d85-4bd9-bfa1-dd6587b6ae5f" />
+</Solution>
+>>>>>>> 224871b87c3d262a82be00d68a6a5a2d3ad9f3ea

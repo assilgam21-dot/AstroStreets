@@ -5,7 +5,6 @@
     "lua",
     "sol2",
     "glfw3",
-    "glad",
     "stb"
   ],
   "builtin-baseline": "a900048467b8199f82c31411e0f1597c267fdada"

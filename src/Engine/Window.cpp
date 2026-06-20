@@ -2,10 +2,12 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
 
 #include <cstdio>
 
-static void keyCallback(GLFWwindow* w, int key, int /*scancode*/, int action, int /*mods*/) {
+static void keyCallback(GLFWwindow* w, int key, int, int action, int) {
     auto* self = static_cast<Window*>(glfwGetWindowUserPointer(w));
     if (self) self->input().onKey(key, action);
 }
@@ -13,9 +15,7 @@ static void keyCallback(GLFWwindow* w, int key, int /*scancode*/, int action, in
 bool Window::create(int width, int height, const std::string& title) {
     if (!glfwInit()) { std::fprintf(stderr, "glfwInit failed\n"); return false; }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -30,16 +30,14 @@ bool Window::create(int width, int height, const std::string& title) {
     return true;
 }
 
-void Window::makeContextCurrent() {
-    glfwMakeContextCurrent(window_);
-    glfwSwapInterval(1);   // vsync
-}
-
-void Window::swapBuffers() { glfwSwapBuffers(window_); }
-void Window::pollEvents()  { glfwPollEvents(); }
+void Window::pollEvents() { glfwPollEvents(); }
 
 bool Window::shouldClose() const { return window_ && glfwWindowShouldClose(window_); }
 void Window::requestClose()      { if (window_) glfwSetWindowShouldClose(window_, 1); }
+
+void* Window::nativeHandle() const {
+    return window_ ? (void*)glfwGetWin32Window(window_) : nullptr;
+}
 
 void Window::destroy() {
     if (window_) glfwDestroyWindow(window_);

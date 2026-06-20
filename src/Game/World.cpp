@@ -4,7 +4,8 @@
 #include "Game/Entities/Player.h"
 #include "Game/Entities/Npc.h"
 #include "Game/Entities/GameObject.h"
-#include "Game/Entities/FireRune.h"
+#include "Game/Entities/ScriptedAreaTrigger.h"
+#include "Game/Scripting/ScriptEngine.h"
 
 #include "Core/RenderFrame.h"
 #include "Core/Constants.h"
@@ -21,6 +22,8 @@ World::World(Input& input, int cols, int rows, int viewportW, int viewportH, std
     : input_(input), cols_(cols), rows_(rows), viewW_(viewportW), viewH_(viewportH),
       scriptsDir_(std::move(scriptsDir)) {
     walls_.assign(size_t(cols_) * size_t(rows_), false);
+    scripts_ = std::make_unique<ScriptEngine>(this);
+    scripts_->Init(scriptsDir_);
 }
 
 World::~World() = default;
@@ -79,10 +82,11 @@ void World::Setup() {
     chest->SetName("Chest");
     chest->SetPosition(15, 25);
 
-    FireRune* rune = Spawn<FireRune>(5, 3);
+    sol::table runeDef = scripts_->LoadDefinition("entities/firerune.lua");
+    auto* rune = Spawn<ScriptedAreaTrigger>(scripts_.get(), runeDef);
     rune->SetPosition(26, 26);
-    focusX_ = (26 + 5 * 0.5f) * TILE_SIZE;   // rune center, for the focus camera
-    focusY_ = (26 + 3 * 0.5f) * TILE_SIZE;
+    focusX_ = (26 + rune->GetWidth() * 0.5f) * TILE_SIZE;
+    focusY_ = (26 + rune->GetHeight() * 0.5f) * TILE_SIZE;
 
     camera_.SetFollow();
     AddMessage("Cam: 1=follow 2=lock 3/f=focus  z/x=zoom");
@@ -135,6 +139,11 @@ void World::Render(RenderFrame& frame) {
         if (e->GetType() == EntityType::AreaTrigger) e->Render(frame);
     for (const auto& e : entities_)
         if (e->GetType() != EntityType::AreaTrigger) e->Render(frame);
+
+    for (const auto& e : entities_)
+        e->EmitLights(frame);
+
+    frame.ambientR = 0.34f; frame.ambientG = 0.34f; frame.ambientB = 0.42f;
 
     // camera
     frame.camera = camera_.State();
